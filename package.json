@@ -1,0 +1,11 @@
+{
+  "name": "stripe-scripts"
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "license": "ISC",
+  "dependencies": {
+    "csv": "^6.3.10",
+    "stripe": "^16.10.0"
+  }
+}
