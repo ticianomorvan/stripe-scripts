@@ -93,8 +93,28 @@ async function uploadCoupons(delimiter = ",") {
       await stripe.coupons.create({
         id: c,
         name: c,
-        percent_off: 75,
+        percent_off: 100,
+        max_redemptions: 1,
       });
+      await delay(100);
+    }
+  });
+
+  fs.createReadStream("coupons.csv").pipe(parser);
+}
+
+async function deleteCoupons(delimiter = ",") {
+  const parser = parse({ delimiter }, async (err, data) => {
+    if (err) {
+      console.log(err);
+
+      return;
+    }
+
+    const coupons = data.map((cell) => cell[0]);
+    for (const c of coupons) {
+      console.log(c);
+      await stripe.coupons.del(c);
       await delay(100);
     }
   });
@@ -112,4 +132,8 @@ if (Number.parseInt(process.env.REMOVE_CUSTOMERS)) {
 
 if (Number.parseInt(process.env.UPLOAD_COUPONS)) {
   uploadCoupons();
+}
+
+if (Number.parseInt(process.env.DELETE_COUPONS)) {
+  deleteCoupons();
 }
